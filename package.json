@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "itemPrice": "node src/price.js",
+    "pve": "node src/pve.js"
   },
   "type": "module",
   "author": "",

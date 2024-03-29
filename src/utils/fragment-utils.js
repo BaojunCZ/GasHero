@@ -36,7 +36,7 @@ export async function getAllFragmentPrices() {
 async function getCommonBlueprintPrice() {
   return getPriceFromMooar(
     contractAddress,
-    getUncommonTraitType(BlueprintFragment)
+    getCommonTraitType(BlueprintFragment)
   );
 }
 
@@ -75,6 +75,16 @@ function getTraitType(type, rarity) {
     { key: "Type", value: [type] },
     { key: "Rarity", value: [rarity] },
   ];
+}
+
+function getTypeChinese(type) {
+  if (type === BlueprintFragment) {
+    return "武器";
+  } else if (type === AncientFragment) {
+    return "宠物";
+  } else {
+    return "未知";
+  }
 }
 
 function getBlueprintRewardCount(difficulty, round) {
@@ -128,15 +138,16 @@ async function getRewardPricesByType(type) {
   const singleUncommonPrice =
     (await getPriceFromMooar(contractAddress, getTraitType(type, Uncommon))) /
     100;
-  const rewardPrices = {};
+  const rewardPrices = [];
   for (let difficulty = 0; difficulty < 2; difficulty++) {
     for (let round = 0; round < 6; round++) {
       const [commonMin, commonMax, uncommonMin, uncommonMax] =
         BlueprintFragment == type
           ? getBlueprintRewardCount(difficulty, round)
           : getAncientRewardCount(difficulty, round);
-      console.log(commonMin, commonMax, uncommonMin, uncommonMax);
-      rewardPrices[`${difficulty + 1}-${round + 1}`] = {
+      rewardPrices.push({
+        type: getTypeChinese(type),
+        round: `${difficulty + 1}-${round + 1}`,
         min: (
           commonMin * singleCommonPrice +
           uncommonMin * singleUncommonPrice
@@ -149,13 +160,13 @@ async function getRewardPricesByType(type) {
           commonMax * singleCommonPrice +
           uncommonMax * singleUncommonPrice
         ).toFixed(2),
-      };
+      });
     }
   }
   return rewardPrices;
 }
 
-export async function getAllRewardPrices() {
+export async function getFragmentRewardPrices() {
   const blueprintPrices = await getRewardPricesByType(BlueprintFragment);
   const ancientPrices = await getRewardPricesByType(AncientFragment);
   return {
@@ -164,6 +175,6 @@ export async function getAllRewardPrices() {
   };
 }
 
-getAllRewardPrices().then((prices) => {
-  console.log(prices);
-});
+// getBlueprintAveragePrices().then((prices) => {
+//   console.log(prices);
+// });

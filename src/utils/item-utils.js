@@ -53,6 +53,18 @@ function getTraitType(type, count) {
   ];
 }
 
+function getTypeChinese(type) {
+  if (type === PowerCan) {
+    return "气罐";
+  } else if (type === HeroPotion) {
+    return "药水";
+  } else if (type === EvolutionCookie) {
+    return "饼干";
+  } else {
+    return "未知";
+  }
+}
+
 function getRewardCount(difficulty, round) {
   const rewardList = [
     [
@@ -79,21 +91,23 @@ async function getAllRewardPricesByType(type, count) {
   const singlePrice =
     (await getPriceFromMooar(contractAddress, getTraitType(type, count))) /
     count;
-  const rewardPrices = {};
+  const rewardPrices = [];
   for (let difficulty = 0; difficulty < 2; difficulty++) {
     for (let round = 0; round < 6; round++) {
       const [min, max] = getRewardCount(difficulty, round);
-      rewardPrices[`${difficulty + 1}-${round + 1}`] = {
+      rewardPrices.push({
+        type: getTypeChinese(type),
+        round: `${difficulty + 1}-${round + 1}`,
         min: (min * singlePrice).toFixed(2),
         average: (((min + max) / 2) * singlePrice).toFixed(2),
         max: (max * singlePrice).toFixed(2),
-      };
+      });
     }
   }
   return rewardPrices;
 }
 
-export async function getAllRewardPrices() {
+export async function getItemRewardPrices() {
   const powerCanPrices = await getAllRewardPricesByType(PowerCan, 40);
   const heroPotionPrices = await getAllRewardPricesByType(HeroPotion, 100);
   const evolutionCookiePrices = await getAllRewardPricesByType(
