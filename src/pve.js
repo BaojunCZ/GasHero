@@ -43,6 +43,7 @@ async function getAllPrices() {
       result[key].push({
         type: price.type,
         average: price.average,
+        min: price.min,
         withoutTax: (price.average * 0.94).toFixed(2),
       });
       result[key].sort((a, b) => b.average - a.average); // Sort by average in descending order

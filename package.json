@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "itemPrice": "node src/price.js",
+    "price": "node src/price.js",
     "pve": "node src/pve.js"
   },
   "type": "module",
