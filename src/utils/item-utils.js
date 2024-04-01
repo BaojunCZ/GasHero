@@ -78,10 +78,10 @@ function getRewardCount(difficulty, round) {
     [
       [10, 13],
       [11, 14],
-      [12, 15],
       [13, 16],
-      [15, 18],
+      [14, 17],
       [16, 19],
+      [18, 21],
     ],
   ];
   return rewardList[difficulty][round];
