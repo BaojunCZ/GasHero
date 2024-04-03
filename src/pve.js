@@ -1,5 +1,5 @@
-import { getFragmentRewardPrices } from "./utils/fragment-utils.js";
-import { getItemRewardPrices } from "./utils/item-utils.js";
+import { getFragmentRewardPrices } from "./utils/fragment.js";
+import { getItemRewardPrices } from "./utils/item.js";
 import { consolePrices } from "./utils/price.js";
 
 const selectedRound = ["1-6", "2-4", "2-5"];

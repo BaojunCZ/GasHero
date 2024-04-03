@@ -1,8 +1,5 @@
 import { getPriceFromMooar } from "./mooar.js";
-import {
-  getCommonAncientPrice,
-  getUncommonAncientPrice,
-} from "./fragment-utils.js";
+import { getCommonAncientPrice, getUncommonAncientPrice } from "./fragment.js";
 
 const contractAddress = "0xA07Cd19aE5e1272B35846e5b91551548f2AeA9d1";
 const Water = "Water";

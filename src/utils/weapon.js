@@ -2,7 +2,7 @@ import { getPriceFromMooar } from "./mooar.js";
 import {
   getCommonBlueprintPrice,
   getUncommonBlueprintPrice,
-} from "./fragment-utils.js";
+} from "./fragment.js";
 
 const contractAddress = "0x00509e403CA5e24b91007472b79cA78E06c8268A";
 const Dagger = "Dagger";

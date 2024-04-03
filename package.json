@@ -7,7 +7,7 @@
     "pve": "node src/pve.js"
   },
   "type": "module",
-  "author": "",
+  "author": "BaojunCZ",
   "license": "ISC",
   "devDependencies": {
     "babel-cli": "^6.26.0"

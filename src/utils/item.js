@@ -26,23 +26,23 @@ export async function getAllItemPrices() {
   };
 }
 
+export async function getEvolutionCookiePrice() {
+  return getPriceFromMooar(contractAddress, getTraitType(EvolutionCookie, 100));
+}
+
+export async function getHeroPotionPrice() {
+  return getPriceFromMooar(contractAddress, getTraitType(HeroPotion, 100));
+}
+
+export async function getPowerCan40Price() {
+  return getPriceFromMooar(contractAddress, getTraitType(PowerCan, 40));
+}
+
 async function getBaseConstructionVehiclePrice() {
   return getPriceFromMooar(
     contractAddress,
     getTraitType(BaseConstructionVehicle)
   );
-}
-
-async function getEvolutionCookiePrice() {
-  return getPriceFromMooar(contractAddress, getTraitType(EvolutionCookie, 100));
-}
-
-async function getHeroPotionPrice() {
-  return getPriceFromMooar(contractAddress, getTraitType(HeroPotion, 100));
-}
-
-async function getPowerCan40Price() {
-  return getPriceFromMooar(contractAddress, getTraitType(PowerCan, 40));
 }
 
 function getTraitType(type, count) {

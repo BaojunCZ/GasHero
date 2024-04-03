@@ -1,5 +1,5 @@
-import { getAllFragmentPrices } from "./fragment-utils.js";
-import { getAllItemPrices } from "./item-utils.js";
+import { getAllFragmentPrices } from "./fragment.js";
+import { getAllItemPrices } from "./item.js";
 import { getAllPetPrices } from "./pet.js";
 import { getAllWeaponPrices } from "./weapon.js";
 
