@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "price": "node src/price.js",
     "pve": "node src/pve.js"
   },
   "type": "module",
