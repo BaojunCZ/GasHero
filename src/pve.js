@@ -1,10 +1,10 @@
 import { getFragmentRewardPrices } from "./utils/fragment-utils.js";
 import { getItemRewardPrices } from "./utils/item-utils.js";
-import { consolePrices } from "./price.js";
+import { consolePrices } from "./utils/price.js";
 
-const selectedRound = ["1-6", "2-4"];
+const selectedRound = ["1-6", "2-4", "2-5"];
 
-async function getAllPrices() {
+async function getPve() {
   const fragmentPrices = await getFragmentRewardPrices();
   const itemPrices = await getItemRewardPrices();
   // console.log("武器");
@@ -28,6 +28,8 @@ async function getAllPrices() {
   //   console.log(price.round, price.average);
   // });
 
+  await consolePrices();
+
   // Combine and group the prices
   const combinedPrices = fragmentPrices.blueprint.concat(
     fragmentPrices.ancient,
@@ -43,11 +45,11 @@ async function getAllPrices() {
     if (selectedRound.includes(key)) {
       result[key].push({
         type: price.type,
-        average: price.average,
-        withoutTax: (price.average * 0.94).toFixed(2),
         min: price.min,
+        withoutTax: (price.min * 0.94).toFixed(2),
+        average: price.average,
       });
-      result[key].sort((a, b) => b.average - a.average); // Sort by average in descending order
+      result[key].sort((a, b) => b.min - a.min);
     }
     return result;
   }, {});
@@ -59,4 +61,4 @@ async function getAllPrices() {
   console.log(groupedPrices);
 }
 
-getAllPrices();
+getPve();

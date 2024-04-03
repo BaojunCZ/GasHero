@@ -7,6 +7,7 @@ const AncientFragment = "Ancient Fragment";
 
 const Common = "Common";
 const Uncommon = "Uncommon";
+const Rare = "Rare";
 
 export async function getAllFragmentPrices() {
   const commonBlueprintPrice = await getCommonBlueprintPrice();
@@ -33,28 +34,28 @@ export async function getAllFragmentPrices() {
   };
 }
 
-async function getCommonBlueprintPrice() {
+export async function getCommonBlueprintPrice() {
   return getPriceFromMooar(
     contractAddress,
     getCommonTraitType(BlueprintFragment)
   );
 }
 
-async function getUncommonBlueprintPrice() {
+export async function getUncommonBlueprintPrice() {
   return getPriceFromMooar(
     contractAddress,
     getUncommonTraitType(BlueprintFragment)
   );
 }
 
-async function getCommonAncientPrice() {
+export async function getCommonAncientPrice() {
   return getPriceFromMooar(
     contractAddress,
     getCommonTraitType(AncientFragment)
   );
 }
 
-async function getUncommonAncientPrice() {
+export async function getUncommonAncientPrice() {
   return getPriceFromMooar(
     contractAddress,
     getUncommonTraitType(AncientFragment)
