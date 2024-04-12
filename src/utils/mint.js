@@ -39,6 +39,14 @@ export async function getAllMintStaff() {
       heroPotionPrice,
       powerCanPrice
     ),
+    绿3绿3: await getMintStaff(
+      "Uncommon",
+      3,
+      "Uncommon",
+      3,
+      heroPotionPrice,
+      powerCanPrice
+    ),
     白1绿1: await getMintStaff(
       "Common",
       1,
@@ -84,25 +92,28 @@ async function getMintStaff(
 }
 
 function getMintStaffSingle(type, mintCount) {
+  const commonBaseHeroPotion = 30;
+  const uncommonBaseHeroPotion = 100;
+  const commonBaseGMT = 2;
+  const uncommonBaseGMT = 3;
   let heroPotion = 0;
   let gmt = 0;
+  let baseHeroPositon = 0;
   if (type === Common) {
-    if (mintCount <= 2) {
-      heroPotion = 30;
-      gmt = 2;
-    } else if (mintCount == 3) {
-      heroPotion = 45;
-      gmt = 3;
-    }
+    gmt = commonBaseGMT;
+    baseHeroPositon = commonBaseHeroPotion;
   } else if (type === Uncommon) {
-    if (mintCount <= 2) {
-      heroPotion = 100;
-      gmt = 3;
-    } else if (mintCount == 3) {
-      heroPotion = 125;
-      gmt = 4;
-    }
+    gmt = uncommonBaseGMT;
+    baseHeroPositon = uncommonBaseHeroPotion;
   }
+
+  if (mintCount <= 2) {
+    heroPotion = baseHeroPositon;
+  } else {
+    gmt += mintCount - 2;
+    heroPotion = baseHeroPositon * mintCount * 0.5;
+  }
+
   const powerCan = Math.ceil(heroPotion / 2);
   return { heroPotion, powerCan, gmt };
 }
