@@ -83,6 +83,14 @@ function getRewardCount(difficulty, round) {
       [16, 19],
       [18, 21],
     ],
+    [
+      [18, 23],
+      [20, 25],
+      [22, 27],
+      [25, 30],
+      [29, 36],
+      [34, 41],
+    ],
   ];
   return rewardList[difficulty][round];
 }
@@ -92,7 +100,7 @@ async function getAllRewardPricesByType(type, count) {
     (await getPriceFromMooar(contractAddress, getTraitType(type, count))) /
     count;
   const rewardPrices = [];
-  for (let difficulty = 0; difficulty < 2; difficulty++) {
+  for (let difficulty = 0; difficulty < 3; difficulty++) {
     for (let round = 0; round < 6; round++) {
       const [min, max] = getRewardCount(difficulty, round);
       rewardPrices.push({

@@ -12,8 +12,10 @@ const Rare = "Rare";
 export async function getAllFragmentPrices() {
   const commonBlueprintPrice = await getCommonBlueprintPrice();
   const uncommonBlueprintPrice = await getUncommonBlueprintPrice();
+  const rareBlueprintPrice = await getRareBlueprintPrice();
   const commonAncientPrice = await getCommonAncientPrice();
   const uncommonAncientPrice = await getUncommonAncientPrice();
+
   return {
     commonBlueprint: {
       package100: commonBlueprintPrice,
@@ -22,6 +24,10 @@ export async function getAllFragmentPrices() {
     uncommonBlueprint: {
       package100: uncommonBlueprintPrice,
       single: uncommonBlueprintPrice / 100,
+    },
+    rareBlueprint: {
+      package100: rareBlueprintPrice,
+      single: rareBlueprintPrice / 100,
     },
     commonAncient: {
       package100: commonAncientPrice,
@@ -48,6 +54,13 @@ export async function getUncommonBlueprintPrice() {
   );
 }
 
+export async function getRareBlueprintPrice() {
+  return getPriceFromMooar(
+    contractAddress,
+    getTraitType(BlueprintFragment, Rare)
+  );
+}
+
 export async function getCommonAncientPrice() {
   return getPriceFromMooar(
     contractAddress,
@@ -68,6 +81,10 @@ function getCommonTraitType(type) {
 
 function getUncommonTraitType(type) {
   return getTraitType(type, Uncommon);
+}
+
+function getRareTraitType(type) {
+  return getTraitType(type, rarity);
 }
 
 function getTraitType(type, rarity) {
@@ -91,12 +108,12 @@ function getTypeChinese(type) {
 function getBlueprintRewardCount(difficulty, round) {
   const rewards = [
     [
-      [1, 2, 0, 0],
-      [4, 5, 0, 0],
-      [7, 8, 0, 0],
-      [9, 12, 0, 0],
-      [12, 15, 0, 0],
-      [14, 17, 0, 0],
+      [1, 2],
+      [4, 5],
+      [7, 8],
+      [9, 12],
+      [12, 15],
+      [14, 17],
     ],
     [
       [13, 16, 0, 1],
@@ -106,6 +123,14 @@ function getBlueprintRewardCount(difficulty, round) {
       [6, 7, 6, 7],
       [0, 0, 8, 9],
     ],
+    [
+      [0, 0, 9, 10],
+      [0, 0, 8, 9, 0, 1],
+      [0, 0, 5, 6, 1, 2],
+      [0, 0, 4, 5, 2, 3],
+      [0, 0, 4, 5, 3, 4],
+      [0, 0, 0, 0, 5, 6],
+    ],
   ];
   return rewards[difficulty][round];
 }
@@ -113,12 +138,12 @@ function getBlueprintRewardCount(difficulty, round) {
 function getAncientRewardCount(difficulty, round) {
   const rewards = [
     [
-      [4, 5, 0, 0],
-      [12, 15, 0, 0],
-      [19, 24, 0, 0],
-      [26, 31, 0, 0],
-      [33, 40, 0, 0],
-      [40, 49, 0, 0],
+      [4, 5],
+      [12, 15],
+      [19, 24],
+      [26, 31],
+      [33, 40],
+      [40, 49],
     ],
     [
       [36, 43, 1, 2],
@@ -127,6 +152,14 @@ function getAncientRewardCount(difficulty, round) {
       [26, 31, 5, 6],
       [19, 24, 8, 9],
       [11, 14, 10, 13],
+    ],
+    [
+      [0, 0, 12, 15],
+      [0, 0, 14, 17],
+      [0, 0, 15, 18],
+      [0, 0, 18, 21],
+      [0, 0, 20, 25],
+      [0, 0, 23, 28],
     ],
   ];
   return rewards[difficulty][round];
@@ -139,27 +172,55 @@ async function getRewardPricesByType(type) {
   const singleUncommonPrice =
     (await getPriceFromMooar(contractAddress, getTraitType(type, Uncommon))) /
     100;
+  const singleRarePrice =
+    (await getPriceFromMooar(contractAddress, getTraitType(type, Rare))) / 100;
   const rewardPrices = [];
-  for (let difficulty = 0; difficulty < 2; difficulty++) {
+  for (let difficulty = 0; difficulty < 3; difficulty++) {
     for (let round = 0; round < 6; round++) {
-      const [commonMin, commonMax, uncommonMin, uncommonMax] =
+      const [
+        commonMin,
+        commonMax,
+        _uncommonMin,
+        _uncommonMax,
+        _rareMin,
+        _rareMax,
+      ] =
         BlueprintFragment == type
           ? getBlueprintRewardCount(difficulty, round)
           : getAncientRewardCount(difficulty, round);
+      let uncommonMin = 0;
+      if (_uncommonMin != undefined) {
+        uncommonMin = _uncommonMin;
+      }
+      let uncommonMax = 0;
+      if (_uncommonMax != undefined) {
+        uncommonMax = _uncommonMax;
+      }
+      let rareMin = 0;
+      if (_rareMin != undefined) {
+        rareMin = _rareMin;
+      }
+      let rareMax = 0;
+      if (_rareMax != undefined) {
+        rareMax = _rareMax;
+      }
       rewardPrices.push({
         type: getTypeChinese(type),
         round: `${difficulty + 1}-${round + 1}`,
         min: (
           commonMin * singleCommonPrice +
-          uncommonMin * singleUncommonPrice
+          uncommonMin * singleUncommonPrice +
+          rareMin * singleRarePrice
         ).toFixed(2),
         average: (
           ((commonMin + commonMax) / 2) * singleCommonPrice +
-          ((uncommonMin + uncommonMax) / 2) * singleUncommonPrice
+          ((uncommonMin + uncommonMax) / 2) * singleUncommonPrice +
+          ((rareMin + rareMax) / 2) * singleRarePrice
         ).toFixed(2),
         max: (
           commonMax * singleCommonPrice +
-          uncommonMax * singleUncommonPrice
+          uncommonMax * singleUncommonPrice +
+          rareMax * singleRarePrice
         ).toFixed(2),
       });
     }
