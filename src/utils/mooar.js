@@ -9,15 +9,17 @@ export async function getPriceFromMooar(contractAddress, traitType) {
         },
         contractAddress: contractAddress,
         sort: "Price low to high",
-        pageSize: 1,
+        pageSize: 3,
         page: 1,
       },
     },
     operationName: "queryCollectionItems",
   });
-  return (
-    data.data.filterCollectionNfts.items[0].listingPrice.amount / 100000000
+  const item = data.data.filterCollectionNfts.items.find(
+    (item) => item.listingPrice.token === "GMT"
   );
+  const amount = item ? item.listingPrice.amount / 100000000 : null;
+  return amount;
 }
 
 async function postData(url = "", data = {}) {
