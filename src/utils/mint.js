@@ -55,6 +55,22 @@ export async function getAllMintStaff() {
       heroPotionPrice,
       powerCanPrice
     ),
+    白1绿3: await getMintStaff(
+      "Common",
+      1,
+      "Uncommon",
+      3,
+      heroPotionPrice,
+      powerCanPrice
+    ),
+    白3绿1: await getMintStaff(
+      "Common",
+      3,
+      "Uncommon",
+      1,
+      heroPotionPrice,
+      powerCanPrice
+    ),
   };
 }
 
@@ -70,17 +86,25 @@ async function getMintStaff(
     heroPotion: heroPotionA,
     powerCan: powerCanA,
     gmt: gmtA,
+    updateHeroPotion: updateHeroPotionA,
   } = getMintStaffSingle(typeA, mintCountA);
   const {
     heroPotion: heroPotionB,
     powerCan: powerCanB,
     gmt: gmtB,
+    updateHeroPotion: updateHeroPotionB,
   } = getMintStaffSingle(typeB, mintCountB);
   const heroPotion = heroPotionA + heroPotionB;
   const powerCan = powerCanA + powerCanB;
   const gmt = gmtA + gmtB;
+  const updateHeroPotion = updateHeroPotionA + updateHeroPotionB;
   const total = parseInt(
-    (heroPotion * heroPotionPrice + powerCan * powerCanPrice + gmt).toFixed(2)
+    (
+      heroPotion * heroPotionPrice +
+      powerCan * powerCanPrice +
+      gmt +
+      updateHeroPotion * heroPotionPrice
+    ).toFixed(2)
   );
   return {
     heroPotion,
@@ -99,6 +123,7 @@ function getMintStaffSingle(type, mintCount) {
   let heroPotion = 0;
   let gmt = 0;
   let baseHeroPositon = 0;
+  let updateHeroPotion = 0;
   if (type === Common) {
     gmt = commonBaseGMT;
     baseHeroPositon = commonBaseHeroPotion;
@@ -109,13 +134,15 @@ function getMintStaffSingle(type, mintCount) {
 
   if (mintCount <= 2) {
     heroPotion = baseHeroPositon;
+    updateHeroPotion = 9 / 2;
   } else {
     gmt += mintCount - 2;
     heroPotion = baseHeroPositon * mintCount * 0.5;
+    updateHeroPotion = 18 / mintCount / 2;
   }
 
   const powerCan = Math.ceil(heroPotion / 2);
-  return { heroPotion, powerCan, gmt };
+  return { heroPotion, powerCan, gmt, updateHeroPotion };
 }
 
 getAllMintStaff().then((result) => {
