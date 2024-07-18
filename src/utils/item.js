@@ -9,7 +9,7 @@ const PowerCan = "Power Can";
 export async function getAllItemPrices() {
   const evolutionCookiePrice = await getEvolutionCookiePrice();
   const heroPotionPrice = await getHeroPotionPrice();
-  const power40CanPrice = await getPowerCan40Price();
+  const powerCanPrice = await getPowerCanPrice();
   return {
     evolutionCookie: {
       package100: evolutionCookiePrice,
@@ -19,9 +19,9 @@ export async function getAllItemPrices() {
       package100: heroPotionPrice,
       single: heroPotionPrice / 100,
     },
-    powerCan40: {
-      package40: power40CanPrice,
-      single: power40CanPrice / 40,
+    powerCan: {
+      package100: powerCanPrice,
+      single: powerCanPrice / 100,
     },
   };
 }
@@ -34,8 +34,8 @@ export async function getHeroPotionPrice() {
   return getPriceFromMooar(contractAddress, getTraitType(HeroPotion, 100));
 }
 
-export async function getPowerCan40Price() {
-  return getPriceFromMooar(contractAddress, getTraitType(PowerCan, 40));
+export async function getPowerCanPrice() {
+  return getPriceFromMooar(contractAddress, getTraitType(PowerCan, 100));
 }
 
 async function getBaseConstructionVehiclePrice() {
@@ -116,7 +116,7 @@ async function getAllRewardPricesByType(type, count) {
 }
 
 export async function getItemRewardPrices() {
-  const powerCanPrices = await getAllRewardPricesByType(PowerCan, 40);
+  const powerCanPrices = await getAllRewardPricesByType(PowerCan, 100);
   const heroPotionPrices = await getAllRewardPricesByType(HeroPotion, 100);
   const evolutionCookiePrices = await getAllRewardPricesByType(
     EvolutionCookie,
@@ -128,7 +128,3 @@ export async function getItemRewardPrices() {
     evolutionCookie: evolutionCookiePrices,
   };
 }
-
-// getAllRewardPrices(PowerCan, 40).then((prices) => {
-//   console.log(prices);
-// });

@@ -23,5 +23,5 @@ export async function consolePrices() {
 
   console.log("进化饼干", prices.evolutionCookie.single);
   console.log("英雄药水", prices.heroPotion.single);
-  console.log("气罐    ", prices.powerCan40.single);
+  console.log("气罐    ", prices.powerCan.single);
 }

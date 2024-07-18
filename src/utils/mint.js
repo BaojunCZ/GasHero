@@ -1,11 +1,11 @@
-import { getHeroPotionPrice, getPowerCan40Price } from "./item.js";
+import { getHeroPotionPrice, getPowerCanPrice } from "./item.js";
 
 const Common = "Common";
 const Uncommon = "Uncommon";
 
 export async function getAllMintStaff() {
   const heroPotionPrice = (await getHeroPotionPrice()) / 100;
-  const powerCanPrice = (await getPowerCan40Price()) / 40;
+  const powerCanPrice = (await getPowerCanPrice()) / 100;
   return {
     白1白1: await getMintStaff(
       "Common",

@@ -2,19 +2,7 @@ import { getFragmentRewardPrices } from "./utils/fragment.js";
 import { getItemRewardPrices } from "./utils/item.js";
 import { consolePrices } from "./utils/price.js";
 
-const selectedRound = [
-  "1-6",
-  "2-1",
-  "2-2",
-  "2-3",
-  "2-4",
-  "2-5",
-  "2-6",
-  "3-1",
-  "3-2",
-  "3-3",
-  "3-4",
-];
+const selectedRound = ["2-3", "2-4", "2-5", "2-6", "3-1"];
 
 async function getPve() {
   const fragmentPrices = await getFragmentRewardPrices();
